@@ -10,9 +10,7 @@
             <directory>${project.basedir}</directory>
             <outputDirectory>/</outputDirectory>
             <includes>
-                <include>README*</include>
-                <include>LICENSE*</include>
-                <include>NOTICE*</include>
+                <include>Classes/**</include>
             </includes>
         </fileSet>
         <fileSet>
@@ -21,10 +19,6 @@
             <includes>
                 <include>*.jar</include>
             </includes>
-        </fileSet>
-        <fileSet>
-            <directory>${project.basedir}/src/main/resources/Classes</directory>
-            <outputDirectory>Classes</outputDirectory>
         </fileSet>
     </fileSets>
 </assembly>

@@ -1,0 +1,118 @@
+package regressionTestPack;
+
+import junit.framework.TestCase;
+import maps.Position;
+import maps.Segment;
+
+public class SegmentReg extends TestCase {
+	private Segment testobject;
+	protected void setUp() throws Exception {
+		super.setUp();
+		testobject = new Segment(Segment.NONE_OPEN,new Position());
+	}
+	public void testEast(){
+		assertEquals(1,testobject.setDoors(Segment.EAST_DOOR_OPEN));
+		assertEquals(true,testobject.isEastDoorOpen());
+		assertEquals(false,testobject.isNorthDoorOpen());
+		assertEquals(false,testobject.isSouthDoorOpen());
+		assertEquals(false,testobject.isWestDoorOpen());
+	}
+	public void testWest(){
+		assertEquals(1,testobject.setDoors(Segment.WEST_DOOR_OPEN));
+		assertEquals(false,testobject.isEastDoorOpen());
+		assertEquals(false,testobject.isNorthDoorOpen());
+		assertEquals(false,testobject.isSouthDoorOpen());
+		assertEquals(true,testobject.isWestDoorOpen());
+	}
+	public void testSouth(){
+		assertEquals(1,testobject.setDoors(Segment.SOUTH_DOOR_OPEN));
+		assertEquals(false,testobject.isEastDoorOpen());
+		assertEquals(false,testobject.isNorthDoorOpen());
+		assertEquals(true,testobject.isSouthDoorOpen());
+		assertEquals(false,testobject.isWestDoorOpen());
+	}
+	public void testNorth(){
+		assertEquals(1,testobject.setDoors(Segment.NORTH_DOOR_OPEN));
+		assertEquals(false,testobject.isEastDoorOpen());
+		assertEquals(true,testobject.isNorthDoorOpen());
+		assertEquals(false,testobject.isSouthDoorOpen());
+		assertEquals(false,testobject.isWestDoorOpen());
+	}
+	public void testNorthAndSouth(){
+		assertEquals(1,testobject.setDoors(Segment.SOUTH_DOOR_OPEN + Segment.NORTH_DOOR_OPEN));
+		assertEquals(false,testobject.isEastDoorOpen());
+		assertEquals(true,testobject.isNorthDoorOpen());
+		assertEquals(true,testobject.isSouthDoorOpen());
+		assertEquals(false,testobject.isWestDoorOpen());
+	}
+	public void testEastAndVest(){
+		assertEquals(1,testobject.setDoors(Segment.WEST_DOOR_OPEN + Segment.EAST_DOOR_OPEN));
+		assertEquals(true,testobject.isEastDoorOpen());
+		assertEquals(false,testobject.isNorthDoorOpen());
+		assertEquals(false,testobject.isSouthDoorOpen());
+		assertEquals(true,testobject.isWestDoorOpen());
+	}
+	public void AllDoorsOpen(){
+		assertEquals(1,testobject.setDoors(Segment.SOUTH_DOOR_OPEN + Segment.NORTH_DOOR_OPEN
+						  					+ Segment.EAST_DOOR_OPEN + Segment.WEST_DOOR_OPEN ));
+		assertEquals(true,testobject.isEastDoorOpen());
+		assertEquals(true,testobject.isNorthDoorOpen());
+		assertEquals(true,testobject.isSouthDoorOpen());
+		assertEquals(true,testobject.isWestDoorOpen());
+		
+	}
+	public void NoDoorsOpen(){
+		assertEquals(1,testobject.setDoors(Segment.NONE_OPEN));
+		assertEquals(false,testobject.isEastDoorOpen());
+		assertEquals(false,testobject.isNorthDoorOpen());
+		assertEquals(false,testobject.isSouthDoorOpen());
+		assertEquals(false,testobject.isWestDoorOpen());
+		
+	}
+	public void testStringDoor(){
+		assertEquals(1,testobject.setDoors(""));
+		assertEquals(false,testobject.isEastDoorOpen());
+		assertEquals(false,testobject.isNorthDoorOpen());
+		assertEquals(false,testobject.isSouthDoorOpen());
+		assertEquals(false,testobject.isWestDoorOpen());
+		
+		
+		assertEquals(1,testobject.setDoors(Segment.NONE_OPEN));
+		assertEquals(1,testobject.setDoors("E"));
+		assertEquals(true,testobject.isEastDoorOpen());
+		assertEquals(false,testobject.isNorthDoorOpen());
+		assertEquals(false,testobject.isSouthDoorOpen());
+		assertEquals(false,testobject.isWestDoorOpen());
+		
+		assertEquals(1,testobject.setDoors("V"));
+		assertEquals(false,testobject.isEastDoorOpen());
+		assertEquals(false,testobject.isNorthDoorOpen());
+		assertEquals(false,testobject.isSouthDoorOpen());
+		assertEquals(true,testobject.isWestDoorOpen());
+		
+		assertEquals(1,testobject.setDoors("S"));
+		assertEquals(false,testobject.isEastDoorOpen());
+		assertEquals(false,testobject.isNorthDoorOpen());
+		assertEquals(true,testobject.isSouthDoorOpen());
+		assertEquals(false,testobject.isWestDoorOpen());
+		
+		assertEquals(1,testobject.setDoors("n"));
+		assertEquals(false,testobject.isEastDoorOpen());
+		assertEquals(true,testobject.isNorthDoorOpen());
+		assertEquals(false,testobject.isSouthDoorOpen());
+		assertEquals(false,testobject.isWestDoorOpen());
+		
+		assertEquals(1,testobject.setDoors("ne"));
+		assertEquals(true,testobject.isEastDoorOpen());
+		assertEquals(true,testobject.isNorthDoorOpen());
+		assertEquals(false,testobject.isSouthDoorOpen());
+		assertEquals(false,testobject.isWestDoorOpen());
+		
+		assertEquals(1,testobject.setDoors("sn"));
+		assertEquals(false,testobject.isEastDoorOpen());
+		assertEquals(true,testobject.isNorthDoorOpen());
+		assertEquals(true,testobject.isSouthDoorOpen());
+		assertEquals(false,testobject.isWestDoorOpen());
+	}
+	
+}

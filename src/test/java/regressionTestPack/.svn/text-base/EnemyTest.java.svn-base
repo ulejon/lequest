@@ -1,0 +1,32 @@
+package regressionTestPack;
+import items.Bone;
+import junit.framework.TestCase;
+import characters.Skeleton;
+public class EnemyTest extends TestCase {
+	private Skeleton skeleton;
+	protected void setUp() throws Exception {
+		super.setUp();
+		skeleton = new Skeleton();
+	}
+	public void testSkeletonItemCollection(){
+		skeleton.getItems().clear();
+		skeleton.addItem(new Bone());
+		assertEquals(true, skeleton.getNumberOfItems() == 1);
+		skeleton.addItem(new Bone());
+		assertEquals(true, skeleton.getNumberOfItems() == 2);
+		skeleton.addItem(new Bone());
+		assertEquals(true, skeleton.getNumberOfItems() == 2);
+		
+	}
+	public void testSkeleton(){
+		boolean gotmaxnumberofitems = false;
+		for(int i = 0 ; i < 10000; i++){
+			skeleton = new Skeleton();
+			if(skeleton.getMaxnrofItems() == skeleton.getNumberOfItems()){
+				gotmaxnumberofitems = true;
+			}
+		}
+		assertEquals(true, gotmaxnumberofitems);
+	}
+
+}

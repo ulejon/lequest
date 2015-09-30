@@ -1,0 +1,51 @@
+package regressionTestPack;
+
+import items.Fists;
+import items.Money;
+import characters.Player;
+import junit.framework.TestCase;
+
+public class CharacterTest extends TestCase {
+	private Player player;
+	protected void setUp() throws Exception {
+		super.setUp();
+		player = new Player("JanBanan",100,100,new maps.CatacombMap());
+	}
+	public void testName(){
+		assertEquals(true, "JanBanan".equals(player.getName()));
+		player.setName("Per");
+		assertEquals(true, "Per".equals(player.getName()));
+	}
+	public void testHealth(){
+		assertEquals(true,player.isAlive());
+		assertEquals(true,100 == player.getHealth());
+		player.setHealth(50);
+		assertEquals(true,50 == player.getHealth());
+		player.decreaseHealth(3);
+		assertEquals(true,47 == player.getHealth());
+		player.addHealth(100);
+		assertEquals(true,100 == player.getHealth());
+		player.setHealth(200);
+		assertEquals(true,100 == player.getHealth());
+		player.setIsAlive(false);
+		assertEquals(true,0 == player.getHealth());
+		assertEquals(false,player.isAlive());
+	}
+	public void testItems(){
+		//TODO test if can change current weapon.. 
+		assertEquals(true,player.getCurrentWeapon() instanceof Fists );
+		/*assertEquals(true,player.getNumberOfItems() == 1);*/ //remove comment when dagger not in constructor
+		assertEquals(true,player.getMaxnrofItems() == 10);
+		player.setMaxNrOfItems(20);
+		assertEquals(true,player.getMaxnrofItems() == 20);
+		player.addItem(new Fists());
+		/*assertEquals(true,player.getNumberOfItems() == 2);*///remove comment when dagger not in constructor
+		
+	}
+	
+	public void testMoney(){
+		player.addItem( new Money( 110 ) );
+		assert( player.getCoins() == 110 );
+	}
+
+}

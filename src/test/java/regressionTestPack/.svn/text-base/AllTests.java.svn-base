@@ -1,0 +1,19 @@
+package regressionTestPack;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
+public class AllTests {
+
+	public static Test suite() {
+		TestSuite suite = new TestSuite("Le Quest testsuit");
+		
+		//Add more tests here.. 
+		suite.addTestSuite(SegmentReg.class);
+		suite.addTestSuite(CharacterTest.class);
+		suite.addTestSuite(WeaponTest.class);
+
+		return suite;
+	}
+
+}
