@@ -26,7 +26,7 @@ public abstract class Armor extends Item{
 		this.armorHealth = ArmorConstants.MAX_ARMOR_HEALTH;
 		this.maxProtectionValue = maxProtectionValue;
 		this.minProtectionValue = minProtectionValue;
-		this.image = new ImageIcon(image);
+		this.image = new ImageIcon(this.getClass().getResource("/" + image));
 	}
 	/**
 	 * Returns the minimum protection value
