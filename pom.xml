@@ -98,7 +98,7 @@
                         <index>true</index>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>LeQuestGame</mainClass>
+                            <mainClass>se.lequest.lequest.LeQuestGame</mainClass>
                         </manifest>
                     </archive>
                     <excludes>
