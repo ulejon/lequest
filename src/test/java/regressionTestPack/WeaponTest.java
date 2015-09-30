@@ -1,8 +1,7 @@
 package regressionTestPack;
 
-import items.Fists;
+import se.lequest.lequest.items.Fists;
 import junit.framework.TestCase;
-import org.fest.assertions.Assertions;
 
 import static org.fest.assertions.Assertions.assertThat;
 

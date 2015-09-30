@@ -1,7 +1,7 @@
 package regressionTestPack;
 
-import characters.Skeleton;
-import items.Bone;
+import se.lequest.lequest.characters.Skeleton;
+import se.lequest.lequest.items.Bone;
 import junit.framework.TestCase;
 
 import static org.fest.assertions.Assertions.assertThat;

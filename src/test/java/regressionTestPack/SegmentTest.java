@@ -1,8 +1,8 @@
 package regressionTestPack;
 
 import junit.framework.TestCase;
-import maps.Position;
-import maps.Segment;
+import se.lequest.lequest.maps.Position;
+import se.lequest.lequest.maps.Segment;
 
 import static org.fest.assertions.Assertions.assertThat;
 

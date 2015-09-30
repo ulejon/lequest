@@ -1,8 +1,8 @@
 package regressionTestPack;
 
-import characters.Player;
-import items.Fists;
-import items.Money;
+import se.lequest.lequest.characters.Player;
+import se.lequest.lequest.items.Fists;
+import se.lequest.lequest.items.Money;
 import junit.framework.TestCase;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -12,7 +12,7 @@ public class CharacterTest extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        player = new Player("JanBanan", 100, 100, new maps.CatacombMap());
+        player = new Player("JanBanan", 100, 100, new se.lequest.lequest.maps.CatacombMap());
     }
 
     public void testName() {
