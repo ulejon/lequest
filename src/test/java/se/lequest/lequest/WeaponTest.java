@@ -1,4 +1,4 @@
-package regressionTestPack;
+package se.lequest.lequest;
 
 import se.lequest.lequest.items.Fists;
 import junit.framework.TestCase;

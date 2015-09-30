@@ -1,4 +1,4 @@
-package regressionTestPack;
+package se.lequest.lequest;
 
 import se.lequest.lequest.characters.Player;
 import se.lequest.lequest.items.Fists;

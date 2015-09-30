@@ -1,4 +1,4 @@
-package regressionTestPack;
+package se.lequest.lequest;
 
 import junit.framework.TestCase;
 import se.lequest.lequest.maps.Position;
