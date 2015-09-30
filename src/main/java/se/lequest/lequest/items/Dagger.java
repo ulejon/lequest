@@ -1,5 +1,6 @@
 package se.lequest.lequest.items;
-import SoundPlayer.soundPlayer;
+
+import se.lequest.lequest.soundplayer.SoundPlayer;
 
 public class Dagger extends Weapon {
 	public static final int MIN_DAMAGE_VALUE = 3; //Stab somewhere on the body except face
@@ -18,7 +19,7 @@ public class Dagger extends Weapon {
 	 */
 	public int attack(){
 		int ret = super.attack();
-		soundPlayer.playsound("sounds/Sword1.wav");
+		SoundPlayer.playsound("sounds/Sword1.wav");
 		return ret;		
 	}
 }
