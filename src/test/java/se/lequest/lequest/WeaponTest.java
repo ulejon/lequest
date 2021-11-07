@@ -1,22 +1,21 @@
 package se.lequest.lequest;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import se.lequest.lequest.items.Fists;
-import junit.framework.TestCase;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-public class WeaponTest extends TestCase {
+class WeaponTest {
     private Fists fists;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         fists = new Fists();
     }
 
-    /**
-     * Tests all the functionality in the Weapon class
-     */
-    public void testWeapon() {
+    @Test
+    void weapon() {
         assertThat(Fists.MIN_DAMAGE_VALUE).isEqualTo(fists.getMinDamageValue());
         assertThat(Fists.MAX_DAMAGE_VALUE).isEqualTo(fists.getMaxDamageValue());
 
@@ -33,8 +32,8 @@ public class WeaponTest extends TestCase {
             }
         }
         assertThat(gotvalue).isTrue();
-		
-		// Test if can get Min Damage value sometime.,,,
+
+        // Test if can get Min Damage value sometime.,,,
         gotvalue = false;
         for (int j = 0; j < 100000; j++) {
             if (fists.attack() == Fists.MIN_DAMAGE_VALUE) {
@@ -46,10 +45,8 @@ public class WeaponTest extends TestCase {
 
     }
 
-    /**
-     * Tests specific for the Fist class
-     */
-    public void testFists() {
+    @Test
+    void fists() {
         assertThat(fists.getSellValue()).isEqualTo(0);
         assertThat(fists.getPurchaseValue()).isEqualTo(0);
         assertThat(fists.isDropable()).isFalse();

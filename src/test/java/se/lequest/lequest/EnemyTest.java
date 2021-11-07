@@ -1,20 +1,22 @@
 package se.lequest.lequest;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import se.lequest.lequest.characters.Skeleton;
 import se.lequest.lequest.items.Bone;
-import junit.framework.TestCase;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-public class EnemyTest extends TestCase {
+class EnemyTest {
     private Skeleton skeleton;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         skeleton = new Skeleton();
     }
 
-    public void testSkeletonItemCollection() {
+    @Test
+    void skeletonItemCollection() {
         skeleton.getItems().clear();
         skeleton.addItem(new Bone());
         assertThat(skeleton.getNumberOfItems()).isEqualTo(1);
@@ -25,7 +27,8 @@ public class EnemyTest extends TestCase {
 
     }
 
-    public void testSkeleton() {
+    @Test
+    void skeleton() {
         boolean gotmaxnumberofitems = false;
         for (int i = 0; i < 10000; i++) {
             skeleton = new Skeleton();

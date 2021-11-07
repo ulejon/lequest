@@ -1,27 +1,30 @@
 package se.lequest.lequest;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import se.lequest.lequest.characters.Player;
 import se.lequest.lequest.items.Fists;
 import se.lequest.lequest.items.Money;
-import junit.framework.TestCase;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-public class CharacterTest extends TestCase {
+class CharacterTest {
     private Player player;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         player = new Player("JanBanan", 100, 100, new se.lequest.lequest.maps.CatacombMap());
     }
 
-    public void testName() {
+    @Test
+    void name() {
         assertThat(player.getName()).isEqualTo("JanBanan");
         player.setName("Per");
         assertThat(player.getName()).isEqualTo("Per");
     }
 
-    public void testHealth() {
+    @Test
+    void health() {
         assertThat(player.isAlive()).isTrue();
         assertThat(player.getHealth()).isEqualTo(100);
         player.setHealth(50);
@@ -37,7 +40,8 @@ public class CharacterTest extends TestCase {
         assertThat(player.isAlive()).isFalse();
     }
 
-    public void testItems() {
+    @Test
+    void items() {
         //TODO test if can change current weapon..
         assertThat(player.getCurrentWeapon()).isInstanceOf(Fists.class);
         /*assertEquals(true,player.getNumberOfItems() == 1);*/ //remove comment when dagger not in constructor
@@ -45,11 +49,12 @@ public class CharacterTest extends TestCase {
         player.setMaxNrOfItems(20);
         assertThat(player.getMaxnrofItems()).isEqualTo(20);
         player.addItem(new Fists());
-		/*assertEquals(true,player.getNumberOfItems() == 2);*///remove comment when dagger not in constructor
+        /*assertEquals(true,player.getNumberOfItems() == 2);*///remove comment when dagger not in constructor
 
     }
 
-    public void testMoney() {
+    @Test
+    void money() {
         int coinsBefore = player.getCoins();
         player.addItem(new Money(110));
         assertThat(player.getCoins()).isEqualTo(coinsBefore + 110);
