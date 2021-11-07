@@ -7,47 +7,49 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
  * This is a class that takes care of reflection (thats is loading ) items from
  * files to the game..
- *
  */
-public class ClassLoader extends java.lang.ClassLoader implements java.io.Serializable{
-    private String forsource = "Classes/items/level";
-    private String endsource = "/";
-    private String marketsource = "Classes/items/market/";
-    private ArrayList<File> files;
-    private int currentlevel;
-    private Random randgen;
+public class ClassLoader extends java.lang.ClassLoader implements java.io.Serializable {
+    private final List<File> files;
+    private int currentLevel;
+    private final Random randGen;
+
     /**
      * Creates a ClassLoader object..
-     *
      */
-    public ClassLoader(){
-        files = new ArrayList<File>();
-        randgen = new Random(System.currentTimeMillis());
-        this.currentlevel = -1;
+    public ClassLoader() {
+        files = new ArrayList<>();
+        randGen = new Random(System.currentTimeMillis());
+        this.currentLevel = -1;
     }
+
     /*
      * Fills the internal array of Files..
      */
-    private void fillList(int level){
-        if(level == this.currentlevel){
+    private void fillList(int level) {
+        if (level == this.currentLevel) {
             //fileArray already up to date.. just return..
             return;
         }
-        if(level == GameConstants.KEY_TO_GET_ALL){
+        if (level == GameConstants.KEY_TO_GET_ALL) {
             //The market frame requests alla the items that can be bought in market..
+            String marketsource = "Classes/items/market/";
             fillList(marketsource);
-            this.currentlevel = GameConstants.KEY_TO_GET_ALL;
-        }else{
+            this.currentLevel = GameConstants.KEY_TO_GET_ALL;
+        } else {
             //A enemy or something requests drop..
+            String forsource = "Classes/items/level";
+            String endsource = "/";
             fillList(forsource + level + endsource);
-            this.currentlevel = level;
+            this.currentLevel = level;
         }
     }
+
     /**
      * Returns a Arraylist of the items that share the same level..
      * Use GameConstants.KEY_TO_GET_ALL to get All the items for
@@ -56,68 +58,72 @@ public class ClassLoader extends java.lang.ClassLoader implements java.io.Serial
      * @param level
      * @return
      */
-    public ArrayList<Item> getItemCollection(int level){
+    public List<Item> getItemCollection(int level) {
         ArrayList<Item> theitemlist = new ArrayList<Item>();
         fillList(level);
-        for(File tmpfile : this.files){
+        for (File tmpfile : this.files) {
             theitemlist.add(fileToItem(tmpfile));
         }
         return theitemlist;
     }
+
     /*
      * Fills the internal array of files with all the .class files in the sourcefolder
      * @param sourcefolder
      */
-    private void fillList(String sourcefolder){
+    private void fillList(String sourcefolder) {
         files.clear();
         String source = sourcefolder;
         File thesource = new File(source);
         File[] files;
-        if(thesource.exists() && thesource.isDirectory()){
+        if (thesource.exists() && thesource.isDirectory()) {
             //the Directory exist.  fill her upp.!
             files = thesource.listFiles();
-            for(File tmpfile: files){
+            for (File tmpfile : files) {
                 //if class file then add it..
-                if(tmpfile.getName().toLowerCase().endsWith(".lequest")){
+                if (tmpfile.getName().toLowerCase().endsWith(".lequest")) {
                     this.files.add(tmpfile);
                 }
             }
-        }else{
-            javax.swing.JOptionPane.showMessageDialog(null, "The path to the source: " + thesource.getAbsolutePath() + "\nThe source is a directory? " + thesource.isDirectory() + "\nThe source exists? " + thesource.exists() );
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(null, "The path to the source: " + thesource.getAbsolutePath() + "\nThe source is a directory? " + thesource.isDirectory() + "\nThe source exists? " + thesource.exists());
             javax.swing.JOptionPane.showMessageDialog(null, "The games files & folders is Currupt.. Exiting.. ReInstall game!");
             System.exit(0);
         }
 
     }
-	/*
-	 * prints out all the files in the fileCollection to the console.
-	 *
-	 */
+    /*
+     * prints out all the files in the fileCollection to the console.
+     *
+     */
 	/*public void printfilelist(){
 		for(File tmpfile: this.files){
 			System.out.println(tmpfile.getName());
 		}
 	}*/
+
     /**
      * Returns a random item .. with the right level..
+     *
      * @param level
      * @return
      */
-    public Item getRandomitem(int level){
+    public Item getRandomitem(int level) {
         fillList(level);
         Item randitem = fileToItem(getRandomfilefromlist());
-        if(randitem == null){
+        if (randitem == null) {
             System.exit(0);
         }
         return randitem;
     }
+
     /*
      * Returns a random File from the fileCollection..
      * @return
      */
-    private File getRandomfilefromlist(){
-        if( 0 <= this.files.size() && this.files.size() < Integer.MAX_VALUE){
-            int randint = randgen.nextInt(this.files.size());
+    private File getRandomfilefromlist() {
+        if (0 <= this.files.size() && this.files.size() < Integer.MAX_VALUE) {
+            int randint = randGen.nextInt(this.files.size());
             return files.get(randint);
         } else {
             return null;
@@ -130,39 +136,41 @@ public class ClassLoader extends java.lang.ClassLoader implements java.io.Serial
      * @param thafile
      * @return
      */
-    private Item fileToItem(File thafile){
-        if( thafile != null ){
+    private Item fileToItem(File thafile) {
+        if (thafile != null) {
             Object aobject = fileToObject(thafile);
-            if(aobject instanceof Item){
-                return (Item)aobject;
+            if (aobject instanceof Item) {
+                return (Item) aobject;
             }
         } else {
             javax.swing.JOptionPane.showMessageDialog(null, "The Item file do not exist!");
         }
         return null;
     }
+
     /*
      * This function trys to read a file into a byte array..
      * @param file
      * @return
      */
-    private byte[] readfile(File file){
+    private byte[] readfile(File file) {
         byte[] bytes = new byte[1];
-        try{
+        try {
             InputStream is = new FileInputStream(file);
             long length = file.length();
-            bytes = new byte[(int)length];
+            bytes = new byte[(int) length];
             int offset = 0;
             int numread = 0;
-            while(offset < bytes.length && (numread = is.read(bytes,offset,bytes.length-offset)) >= 0)
-            {
+            while (offset < bytes.length && (numread = is.read(bytes, offset, bytes.length - offset)) >= 0) {
                 offset += numread;
             }
             is.close();
-        }catch(Exception e){}
+        } catch (Exception e) {
+        }
         return bytes;
 
     }
+
     /*
      * This function trys to load a class from a .class file..
      * it will check if the class is already loaded.. in that case the function
@@ -172,22 +180,23 @@ public class ClassLoader extends java.lang.ClassLoader implements java.io.Serial
      * @param thafile
      * @return
      */
-    private Object fileToObject(File thafile){
+    private Object fileToObject(File thafile) {
         Object theobject = null;
-        String classname =  "se.lequest.lequest.items."+thafile.getName().replace(".leQuest", "");
+        String classname = "se.lequest.lequest.items." + thafile.getName().replace(".leQuest", "");
         Class thaclassobject = this.findLoadedClass(classname);
-        if(thaclassobject == null){
+        if (thaclassobject == null) {
             byte[] thebytes = readfile(thafile);
-            Class theclass = this.defineClass(null, thebytes, 0,(int)thafile.length());
-            try{
+            Class theclass = this.defineClass(null, thebytes, 0, (int) thafile.length());
+            try {
                 theobject = theclass.newInstance();
-            }catch(Exception e){
+            } catch (Exception e) {
                 ;
             }
-        }else{
-            try{
+        } else {
+            try {
                 theobject = thaclassobject.newInstance();
-            }catch(Exception e){}
+            } catch (Exception e) {
+            }
         }
         return theobject;
     }

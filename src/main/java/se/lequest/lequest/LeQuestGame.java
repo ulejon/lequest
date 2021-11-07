@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import se.lequest.lequest.fileio.FileIO;
 import se.lequest.lequest.gui.IntroFrame;
 
-import javax.swing.*;
+import javax.swing.UIManager;
 
 
 public class LeQuestGame {

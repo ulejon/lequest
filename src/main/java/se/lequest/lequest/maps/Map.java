@@ -18,19 +18,21 @@ public abstract class Map implements java.io.Serializable {
 
     /**
      * Create a empty map object
+     *
      * @param mapname map name
-     * @param level the level of the map
+     * @param level   the level of the map
      */
     public Map(String mapname, int level) {
         this.mapName = mapname;
         this.themap = new HashMap<String, Segment>();
-        this.enemycollection = EnemyCollection.getInstace();
+        this.enemycollection = EnemyCollection.getInstance();
         this.level = level;
         randgen = new Random(System.currentTimeMillis());
     }
 
     /**
      * Returns the name of the map
+     *
      * @return name
      */
     public String getName() {
@@ -40,7 +42,6 @@ public abstract class Map implements java.io.Serializable {
     /**
      * Returns a segment (room) at a sertain position
      * null if it dont exist
-     *
      */
     public Segment getSegment(Position pos) {
 		/*for(Segment tempseg : themap){
@@ -56,6 +57,7 @@ public abstract class Map implements java.io.Serializable {
 
     /**
      * Returns the position of the Segment the player starts at
+     *
      * @return
      */
     public Position getStartPos() {
@@ -64,6 +66,7 @@ public abstract class Map implements java.io.Serializable {
 
     /**
      * Set the start segment(room) of the map
+     *
      * @param seg
      */
     public void setStartSegment(Segment seg) {
@@ -74,6 +77,7 @@ public abstract class Map implements java.io.Serializable {
 
     /**
      * Add a segment (room) to the map
+     *
      * @param seg
      */
     public void addSegment(Segment seg) {
@@ -83,7 +87,6 @@ public abstract class Map implements java.io.Serializable {
     /**
      * This function generates random enemys to random rooms..
      * it does not add enemys to the start or end segment..
-     *
      */
     public void generateEnemys() {
         java.util.Collection<Segment> segmentcollection = themap.values();

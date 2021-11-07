@@ -1,19 +1,34 @@
 package se.lequest.lequest.gui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.util.List;
+import se.lequest.lequest.items.Item;
 
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.JLabel;
+import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.*;
-import se.lequest.lequest.items.Item;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Source: http://java.sun.com/docs/books/tutorial/uiswing/components/examples/TableSorter.java
- * 
+ * <p>
  * TableSorter is a decorator for TableModels; adding sorting
  * functionality to a supplied TableModel. TableSorter does
  * not store or copy the data in its TableModel; instead it maintains
@@ -57,12 +72,12 @@ import se.lequest.lequest.items.Item;
  * <p/>
  * This is a long overdue rewrite of a class of the same name that
  * first appeared in the swing table demos in 1997.
- * 
+ *
  * @author Philip Milne
- * @author Brendon McLean 
+ * @author Brendon McLean
  * @author Dan van Enckevort
  * @author Parwinder Sekhon
- * @author altered by Per Leino 
+ * @author altered by Per Leino
  * @version 2.0 02/27/04
  */
 
@@ -77,16 +92,16 @@ public class TableSorter extends AbstractTableModel {
 
     public static final Comparator COMPARABLE_COMAPRATOR = new Comparator() {
         public int compare(Object o1, Object o2) {
-              return ((Comparable) o1).compareTo(o2);
+            return ((Comparable) o1).compareTo(o2);
         }
     };
     public static final Comparator LEXICAL_COMPARATOR = new Comparator() {
         public int compare(Object o1, Object o2) {
-        	/*Altered by Per Leino to handle Integer Comparation.. */
-         	if((o1 instanceof Integer) && (o2 instanceof Integer)){
-        		return ((Integer) o1).compareTo((Integer)o2);        		
-        	}
-         	/*End of Alter by Per Leino */
+            /*Altered by Per Leino to handle Integer Comparation.. */
+            if ((o1 instanceof Integer) && (o2 instanceof Integer)) {
+                return ((Integer) o1).compareTo((Integer) o2);
+            }
+            /*End of Alter by Per Leino */
             return o1.toString().compareTo(o2.toString());
         }
     };
@@ -115,9 +130,11 @@ public class TableSorter extends AbstractTableModel {
         setTableHeader(tableHeader);
         setTableModel(tableModel);
     }
-    public void asort(){
-    	setSortingStatus(0, ASCENDING);
+
+    public void asort() {
+        setSortingStatus(0, ASCENDING);
     }
+
     private void clearSortingState() {
         viewToModel = null;
         modelToView = null;
@@ -167,7 +184,7 @@ public class TableSorter extends AbstractTableModel {
 
     private Directive getDirective(int column) {
         for (int i = 0; i < sortingColumns.size(); i++) {
-            Directive directive = (Directive)sortingColumns.get(i);
+            Directive directive = (Directive) sortingColumns.get(i);
             if (directive.column == column) {
                 return directive;
             }
@@ -286,18 +303,20 @@ public class TableSorter extends AbstractTableModel {
     public Object getValueAt(int row, int column) {
         return tableModel.getValueAt(modelIndex(row), column);
     }
+
     /*
      * Added by Per Leino..
      */
-    public Item getRow(int row){
-    	return ((ItemsTableModel)tableModel).getRow(modelIndex(row));
+    public Item getRow(int row) {
+        return ((ItemsTableModel) tableModel).getRow(modelIndex(row));
     }
+
     public void setValueAt(Object aValue, int row, int column) {
         tableModel.setValueAt(aValue, modelIndex(row), column);
     }
 
     // Helper classes
-    
+
     private class Row implements Comparable {
         private int modelIndex;
 
@@ -309,7 +328,7 @@ public class TableSorter extends AbstractTableModel {
             int row1 = modelIndex;
             int row2 = ((Row) o).modelIndex;
 
-            for (Iterator it = sortingColumns.iterator(); it.hasNext();) {
+            for (Iterator it = sortingColumns.iterator(); it.hasNext(); ) {
                 Directive directive = (Directive) it.next();
                 int column = directive.column;
                 Object o1 = tableModel.getValueAt(row1, column);
@@ -342,7 +361,7 @@ public class TableSorter extends AbstractTableModel {
                 fireTableChanged(e);
                 return;
             }
-                
+
             // If the table structure has changed, cancel the sorting; the             
             // sorting columns may have been either moved or deleted from             
             // the model. 
@@ -376,9 +395,9 @@ public class TableSorter extends AbstractTableModel {
                     && getSortingStatus(column) == NOT_SORTED
                     && modelToView != null) {
                 int viewIndex = getModelToView()[e.getFirstRow()];
-                fireTableChanged(new TableModelEvent(TableSorter.this, 
-                                                     viewIndex, viewIndex, 
-                                                     column, e.getType()));
+                fireTableChanged(new TableModelEvent(TableSorter.this,
+                        viewIndex, viewIndex,
+                        column, e.getType()));
                 return;
             }
 
@@ -421,13 +440,13 @@ public class TableSorter extends AbstractTableModel {
         }
 
         public void paintIcon(Component c, Graphics g, int x, int y) {
-            Color color = c == null ? Color.GRAY : c.getBackground();             
+            Color color = c == null ? Color.GRAY : c.getBackground();
             // In a compound sort, make each succesive triangle 20% 
             // smaller than the previous one. 
-            int dx = (int)(size/2*Math.pow(0.8, priority));
+            int dx = (int) (size / 2 * Math.pow(0.8, priority));
             int dy = descending ? dx : -dx;
             // Align icon (roughly) with font baseline. 
-            y = y + 5*size/6 + (descending ? -dy : 0);
+            y = y + 5 * size / 6 + (descending ? -dy : 0);
             int shift = descending ? 1 : -1;
             g.translate(x, y);
 
@@ -435,12 +454,12 @@ public class TableSorter extends AbstractTableModel {
             g.setColor(color.darker());
             g.drawLine(dx / 2, dy, 0, 0);
             g.drawLine(dx / 2, dy + shift, 0, shift);
-            
+
             // Left diagonal. 
             g.setColor(color.brighter());
             g.drawLine(dx / 2, dy, dx, 0);
             g.drawLine(dx / 2, dy + shift, dx, shift);
-            
+
             // Horizontal line. 
             if (descending) {
                 g.setColor(color.darker().darker());
@@ -469,13 +488,13 @@ public class TableSorter extends AbstractTableModel {
             this.tableCellRenderer = tableCellRenderer;
         }
 
-        public Component getTableCellRendererComponent(JTable table, 
+        public Component getTableCellRendererComponent(JTable table,
                                                        Object value,
-                                                       boolean isSelected, 
+                                                       boolean isSelected,
                                                        boolean hasFocus,
-                                                       int row, 
+                                                       int row,
                                                        int column) {
-            Component c = tableCellRenderer.getTableCellRendererComponent(table, 
+            Component c = tableCellRenderer.getTableCellRendererComponent(table,
                     value, isSelected, hasFocus, row, column);
             if (c instanceof JLabel) {
                 JLabel l = (JLabel) c;
