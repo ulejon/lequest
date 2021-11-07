@@ -53,3 +53,6 @@ buildNumber.properties
 
 ### Project specifics
 HighScore.save
+Classes/
+*.DS_Store
+logs/

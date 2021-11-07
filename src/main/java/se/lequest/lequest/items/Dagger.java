@@ -19,7 +19,7 @@ public class Dagger extends Weapon {
 	 */
 	public int attack(){
 		int ret = super.attack();
-		SoundPlayer.playsound("sounds/Sword1.wav");
+		SoundPlayer.play("sounds/Sword1.wav");
 		return ret;		
 	}
 }

@@ -21,8 +21,6 @@
         </encoder>
     </appender>
 
-    <logger name="se.lequest.lequest" level="TRACE"/>
-
     <root level="DEBUG">
         <appender-ref ref="FILE"/>
         <appender-ref ref="STDOUT"/>

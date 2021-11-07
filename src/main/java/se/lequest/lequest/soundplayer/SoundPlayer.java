@@ -1,55 +1,60 @@
 package se.lequest.lequest.soundplayer;
-import java.io.File;
 
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioSystem;
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
-import java.io.*;
+import javax.sound.sampled.*;
+import javax.sound.sampled.DataLine.Info;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+
+import static javax.sound.sampled.AudioFormat.Encoding.PCM_SIGNED;
+import static javax.sound.sampled.AudioSystem.getAudioInputStream;
+
 /**
  * This class takes care of playing sound in the game
- *
  */
 public class SoundPlayer {
-    /**
-     * Plays the file pauses the thread while playing it..
-     * Plays it by best effort..
-     * @param filename
-     */
-    public static void playsound(String filename){
-        long numMillisecondsToSleep = audiofilelength(filename) ;
-        try{
-            InputStream in = new FileInputStream(filename);
-            AudioStream as = new AudioStream(in);
-            AudioPlayer.player.start(as);
-            Thread.sleep(numMillisecondsToSleep);
-            AudioPlayer.player.stop(as);
-        }catch(Exception e){}
-    }
-    /**
-     * Plays the file in a new thread..
-     * Plays it by best effort..
-     * @param filename
-     */
-    public static void playsoundWithoutSuspendingThread(String filename){
-        try{
-            InputStream in = new FileInputStream(filename);
-            AudioStream as = new AudioStream(in);
-            AudioPlayer.player.start(as);
-        }catch(Exception e){}
-    }
-    /*
-     * Returns the length of the file in milisecs..
-     * @return
-     */
-    private static long audiofilelength(String filename){
-        long duration = 0;
-        File file = new File(filename);
-        try{
-            AudioFileFormat audioFileFormat = AudioSystem.getAudioFileFormat(file);
-            duration = (long)((1000 * audioFileFormat.getByteLength())/ (audioFileFormat.getFormat().getFrameSize() *audioFileFormat.getFormat().getFrameRate()) );
-        }catch(Exception e){}
-        return duration;
 
+    public static void play(String filename) {
+        ClassLoader classLoader = SoundPlayer.class.getClassLoader();
+        URL resource = classLoader.getResource(filename);
+        final File file = new File(resource.getFile());
+
+        try (final AudioInputStream in = getAudioInputStream(file)) {
+
+            final AudioFormat outFormat = getOutFormat(in.getFormat());
+            final Info info = new Info(SourceDataLine.class, outFormat);
+
+            try (final SourceDataLine line =
+                         (SourceDataLine) AudioSystem.getLine(info)) {
+
+                if (line != null) {
+                    line.open(outFormat);
+                    line.start();
+                    stream(getAudioInputStream(outFormat, in), line);
+                    line.drain();
+                    line.stop();
+                }
+            }
+
+        } catch (UnsupportedAudioFileException
+                | LineUnavailableException
+                | IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private static AudioFormat getOutFormat(AudioFormat inFormat) {
+        final int ch = inFormat.getChannels();
+
+        final float rate = inFormat.getSampleRate();
+        return new AudioFormat(PCM_SIGNED, rate, 16, ch, ch * 2, rate, false);
+    }
+
+    private static void stream(AudioInputStream in, SourceDataLine line)
+            throws IOException {
+        final byte[] buffer = new byte[4096];
+        for (int n = 0; n != -1; n = in.read(buffer, 0, buffer.length)) {
+            line.write(buffer, 0, n);
+        }
     }
 }
