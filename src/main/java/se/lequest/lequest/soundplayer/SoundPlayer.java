@@ -7,9 +7,10 @@ import javax.sound.sampled.DataLine.Info;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.File;
+import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
+import java.util.Objects;
 
 import static javax.sound.sampled.AudioFormat.Encoding.PCM_SIGNED;
 import static javax.sound.sampled.AudioSystem.getAudioInputStream;
@@ -19,12 +20,11 @@ import static javax.sound.sampled.AudioSystem.getAudioInputStream;
  */
 public class SoundPlayer {
 
-    public static void play(String filename) {
-        ClassLoader classLoader = SoundPlayer.class.getClassLoader();
-        URL resource = classLoader.getResource(filename);
-        final File file = new File(resource.getFile());
-
-        try (final AudioInputStream in = getAudioInputStream(file)) {
+    public void play(String filename) {
+        try (
+                final InputStream resourceAsStream = new BufferedInputStream(Objects.requireNonNull(getClass().getResourceAsStream(filename)));
+                final AudioInputStream in = getAudioInputStream(resourceAsStream)
+        ) {
 
             final AudioFormat outFormat = getOutFormat(in.getFormat());
             final Info info = new Info(SourceDataLine.class, outFormat);
@@ -48,14 +48,14 @@ public class SoundPlayer {
         }
     }
 
-    private static AudioFormat getOutFormat(AudioFormat inFormat) {
+    private AudioFormat getOutFormat(AudioFormat inFormat) {
         final int ch = inFormat.getChannels();
 
         final float rate = inFormat.getSampleRate();
         return new AudioFormat(PCM_SIGNED, rate, 16, ch, ch * 2, rate, false);
     }
 
-    private static void stream(AudioInputStream in, SourceDataLine line)
+    private void stream(AudioInputStream in, SourceDataLine line)
             throws IOException {
         final byte[] buffer = new byte[4096];
         for (int n = 0; n != -1; n = in.read(buffer, 0, buffer.length)) {

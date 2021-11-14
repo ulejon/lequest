@@ -9,10 +9,13 @@ public class Dagger extends Weapon {
     public static final int MAP_LEVEL = 1;
     public static final String image = "pictures/dagger.gif";
 
+    private final SoundPlayer soundPlayer;
+
     public Dagger() {
         super(MAX_DAMAGE_VALUE, MIN_DAMAGE_VALUE, "Dagger", ITEM_VALUE, MAP_LEVEL, image);
         this.setSellable(true);
         this.setDropable(true);
+        this.soundPlayer = new SoundPlayer();
     }
 
     /**
@@ -20,7 +23,7 @@ public class Dagger extends Weapon {
      */
     public int attack() {
         int ret = super.attack();
-        SoundPlayer.play("sounds/Sword1.wav");
+        soundPlayer.play("/sounds/Sword1.wav");
         return ret;
     }
 }
